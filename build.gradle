@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+}
+
+group 'eu.antifuse'
+version '2.0'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+sourceCompatibility = targetCompatibility = 8
+mainClassName='eu.antifuse.jftsjava.Main'
+jar {
+    manifest {
+        attributes 'Main-Class': 'eu.antifuse.jftsjava.Main'
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+}
+
+javafx {
+    version = "11"
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.base', 'javafx.graphics' ]
+}
+
+dependencies {
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
+}
+
+test {
+    useJUnitPlatform()
+}

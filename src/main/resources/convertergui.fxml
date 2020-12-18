@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eu.antifuse.jftsjava.Controller">
+   <children>
+      <VBox>
+         <children>
+            <HBox VBox.vgrow="NEVER">
+               <children>
+                  <TextField fx:id="pathField" editable="false" maxWidth="1.7976931348623157E308" promptText="Dateipfad" HBox.hgrow="ALWAYS" />
+                  <Button fx:id="bBrowse" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBrowse" text="Durchsuchen" />
+               </children>
+            </HBox>
+            <Button fx:id="bConvert" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleConvert" text="Konvertieren" />
+            <Label fx:id="errorLabel" text="Keine Datei ausgewählt!" textFill="RED" visible="false" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" top="5.0" />
+               </padding>
+            </Label>
+            <Pane prefWidth="400.0" VBox.vgrow="ALWAYS" />
+            <Button fx:id="bSave" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSave" text="Speichern" />
+         </children>
+      </VBox>
+       <TextArea fx:id="outArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" />
+   </children>
+</HBox>
