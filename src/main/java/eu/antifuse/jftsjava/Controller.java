@@ -53,10 +53,10 @@ public class Controller extends Application {
     }
 
     @FXML
-    public void handleBrowse(ActionEvent e) throws URISyntaxException {
+    public void handleBrowse(ActionEvent e) throws URISyntaxException, JAXBException {
         errorLabel.setVisible(false);
         openChooser.setTitle("JFLAP-Datei öffnen");
-        openChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JFLAP File", "*.jff"),new FileChooser.ExtensionFilter("XML File", "*.xml"));
+        openChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter("JFLAP File", "*.jff"),new FileChooser.ExtensionFilter("XML File", "*.xml"));
         openChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("JFLAP File", "*.jff"));;
         file = openChooser.showOpenDialog(bBrowse.getScene().getWindow());
         if (file != null) {
@@ -67,8 +67,7 @@ public class Controller extends Application {
     @FXML
     public void handleSave(ActionEvent e) throws IOException, URISyntaxException {
         saveChooser.setTitle("Skript speichern");
-        saveChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text File", "*.txt"));
-        saveChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Text File", "*.txt"));
+        saveChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter("Text File", "*.txt"));
         if (file != null) {
             saveChooser.setInitialDirectory(file.getParentFile());
             saveChooser.setInitialFileName(file.getName().split("\\.")[0]);
@@ -80,6 +79,20 @@ public class Controller extends Application {
         FileWriter write = new FileWriter(toSave);
         write.append(outArea.getText());
         write.close();
+    }
+
+    @FXML
+    public void handleSaveJFF(ActionEvent e) throws IOException, JAXBException {
+        saveChooser.setTitle("Als JFF speichern");
+        saveChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter("JFLAP File", "*.jff"), new FileChooser.ExtensionFilter("XML File", "*.xml"));
+        if (file != null) {
+            saveChooser.setInitialDirectory(file.getParentFile());
+            saveChooser.setInitialFileName(file.getName().split("\\.")[0]);
+        }
+
+        File toSave = saveChooser.showSaveDialog(bSave.getScene().getWindow());
+        if (toSave == null) return;
+        convert.convertScript(outArea.getText(), toSave);
     }
 
     public static void main(String[] args) {

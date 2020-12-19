@@ -15,7 +15,7 @@
                   <Button fx:id="bBrowse" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBrowse" text="Durchsuchen" />
                </children>
             </HBox>
-            <Button fx:id="bConvert" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleConvert" text="Konvertieren" />
+            <Button fx:id="bConvert" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleConvert" text="In Skript konvertieren" />
             <Label fx:id="errorLabel" text="Keine Datei ausgewählt!" textFill="RED" visible="false" VBox.vgrow="ALWAYS">
                <font>
                   <Font size="16.0" />
@@ -25,7 +25,9 @@
                </padding>
             </Label>
             <Pane prefWidth="400.0" VBox.vgrow="ALWAYS" />
-            <Button fx:id="bSave" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSave" text="Speichern" />
+            <Button fx:id="bJFF" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSaveJFF" text="JFLAP-Automat speichern">
+            </Button>
+            <Button fx:id="bSave" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSave" text="Skript speichern" />
          </children>
       </VBox>
        <TextArea fx:id="outArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" />

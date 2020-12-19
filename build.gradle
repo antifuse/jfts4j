@@ -6,24 +6,15 @@ plugins {
 }
 
 group 'eu.antifuse'
-version '2.0'
+version '2.1'
 
 repositories {
     jcenter()
     mavenCentral()
 }
 
-sourceCompatibility = targetCompatibility = 8
+targetCompatibility = sourceCompatibility = 8
 mainClassName='eu.antifuse.jftsjava.Main'
-jar {
-    manifest {
-        attributes 'Main-Class': 'eu.antifuse.jftsjava.Main'
-    }
-    from {
-        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
-}
 
 javafx {
     version = "11"

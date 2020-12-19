@@ -581,8 +581,8 @@ public class Structure {
             @XmlElement(required = true)
             protected BigDecimal y;
             @XmlElement(name = "final")
-            protected Object _final;
-            protected Object initial;
+            protected String _final;
+            protected String initial;
             @XmlAttribute(name = "id", required = true)
             @XmlSchemaType(name = "unsignedByte")
             protected short id;
@@ -669,7 +669,7 @@ public class Structure {
              *     {@link Object }
              *     
              */
-            public Object getFinal() {
+            public String getFinal() {
                 return _final;
             }
 
@@ -681,7 +681,7 @@ public class Structure {
              *     {@link Object }
              *     
              */
-            public void setFinal(Object value) {
+            public void setFinal(String value) {
                 this._final = value;
             }
 
@@ -693,7 +693,7 @@ public class Structure {
              *     {@link Object }
              *     
              */
-            public Object getInitial() {
+            public String getInitial() {
                 return initial;
             }
 
@@ -705,7 +705,7 @@ public class Structure {
              *     {@link Object }
              *     
              */
-            public void setInitial(Object value) {
+            public void setInitial(String value) {
                 this.initial = value;
             }
 
