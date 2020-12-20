@@ -1,5 +1,5 @@
 # jfts4j
-
+![](https://img.shields.io/github/v/release/antifuse/jfts4j)
 ## What it does
 jfts4j is a JFLAP to Turing Machine Simulator converter. It supports the conversion of JFLAP XML to Simulator scripts (saved as plain text and displayed on screen) and vice-versa.
 The GUI was designed with JavaFX, XML parsing and building is handled with JAXB.
