@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -18,8 +19,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
-public class Controller extends Application {
+public class Controller extends Application implements Initializable {
     @FXML
     public TextArea outArea;
     @FXML
@@ -30,6 +34,7 @@ public class Controller extends Application {
     @FXML
     public Label errorLabel;
 
+    public ResourceBundle strings;
     final FileChooser openChooser = new FileChooser();
     final FileChooser saveChooser = new FileChooser();
     public Converter convert = new Converter();
@@ -38,9 +43,11 @@ public class Controller extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        loader = new FXMLLoader(Thread.currentThread().getContextClassLoader().getResource("convertergui.fxml"));
+        Locale locale = Locale.getDefault();
+        ResourceBundle resources = ResourceBundle.getBundle("strings", locale);
+        loader = new FXMLLoader(Thread.currentThread().getContextClassLoader().getResource("convertergui.fxml"), resources);
         Parent root = loader.load();
-        primaryStage.setTitle("JFTS Converter");
+        primaryStage.setTitle(resources.getString("ui.title"));
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -55,19 +62,19 @@ public class Controller extends Application {
     @FXML
     public void handleBrowse(ActionEvent e) throws URISyntaxException, JAXBException {
         errorLabel.setVisible(false);
-        openChooser.setTitle("JFLAP-Datei öffnen");
-        openChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter("JFLAP File", "*.jff"),new FileChooser.ExtensionFilter("XML File", "*.xml"));
-        openChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("JFLAP File", "*.jff"));;
+        openChooser.setTitle(strings.getString("chooser.openJFLAP"));
+        openChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(strings.getString("chooser.formats.JFLAP"), "*.jff"),new FileChooser.ExtensionFilter(strings.getString("chooser.formats.XML"), "*.xml"));
         file = openChooser.showOpenDialog(bBrowse.getScene().getWindow());
         if (file != null) {
             pathField.setText(file.getAbsolutePath());
+            handleConvert(e);
         }
     }
 
     @FXML
     public void handleSave(ActionEvent e) throws IOException, URISyntaxException {
-        saveChooser.setTitle("Skript speichern");
-        saveChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter("Text File", "*.txt"));
+        saveChooser.setTitle(strings.getString("chooser.saveScript"));
+        saveChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(strings.getString("chooser.formats.TXT"), "*.txt"));
         if (file != null) {
             saveChooser.setInitialDirectory(file.getParentFile());
             saveChooser.setInitialFileName(file.getName().split("\\.")[0]);
@@ -83,8 +90,8 @@ public class Controller extends Application {
 
     @FXML
     public void handleSaveJFF(ActionEvent e) throws IOException, JAXBException {
-        saveChooser.setTitle("Als JFF speichern");
-        saveChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter("JFLAP File", "*.jff"), new FileChooser.ExtensionFilter("XML File", "*.xml"));
+        saveChooser.setTitle(strings.getString("chooser.saveJFF"));
+        saveChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(strings.getString("chooser.formats.JFLAP"), "*.jff"), new FileChooser.ExtensionFilter(strings.getString("chooser.formats.XML"), "*.xml"));
         if (file != null) {
             saveChooser.setInitialDirectory(file.getParentFile());
             saveChooser.setInitialFileName(file.getName().split("\\.")[0]);
@@ -102,5 +109,10 @@ public class Controller extends Application {
     @Override
     public void stop() throws Exception {
         System.exit(0);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.strings = resources;
     }
 }
