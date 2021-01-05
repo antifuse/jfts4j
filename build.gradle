@@ -13,7 +13,7 @@ repositories {
     mavenCentral()
 }
 
-targetCompatibility = sourceCompatibility = 8
+targetCompatibility = sourceCompatibility = 10
 mainClassName='eu.antifuse.jftsjava.Main'
 
 javafx {
