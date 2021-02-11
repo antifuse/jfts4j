@@ -1,9 +1,10 @@
 package eu.antifuse.jftsjava;
 
+@SuppressWarnings("unused")
 public interface Statelike {
-    public String getTag();
-    public Object getFinal();
-    public Object getInitial();
-    public short getId();
-    public String getName();
+    String getTag();
+    Object getFinal();
+    Object getInitial();
+    short getId();
+    String getName();
 }

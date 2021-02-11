@@ -54,6 +54,7 @@ public class ObjectFactory {
      * Create an instance of {@link Structure.Automaton.Block }
      * 
      */
+    @SuppressWarnings("unused")
     public Structure.Automaton.Block createStructureAutomatonBlock() {
         return new Structure.Automaton.Block();
     }

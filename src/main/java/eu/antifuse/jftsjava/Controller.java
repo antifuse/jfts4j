@@ -1,7 +1,6 @@
 package eu.antifuse.jftsjava;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,7 +17,6 @@ import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -40,6 +38,7 @@ public class Controller extends Application implements Initializable {
     public Converter convert = new Converter();
     public File file;
     public FXMLLoader loader;
+    public Button bJFF;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -54,25 +53,28 @@ public class Controller extends Application implements Initializable {
     }
 
     @FXML
-    public void handleConvert(ActionEvent e) throws JAXBException {
+    public void handleConvert() throws JAXBException, IOException {
         if (file == null) errorLabel.setVisible(true);
-        else outArea.setText(convert.convertFile(file));
+        else if (file.getName().substring(file.getName().lastIndexOf(".") + 1).equalsIgnoreCase("json"))
+            outArea.setText(convert.flaciToTMS(file));
+        else outArea.setText(convert.jflapToTMS(file));
     }
 
     @FXML
-    public void handleBrowse(ActionEvent e) throws URISyntaxException, JAXBException {
+    public void handleBrowse() throws JAXBException, IOException {
         errorLabel.setVisible(false);
         openChooser.setTitle(strings.getString("chooser.openJFLAP"));
-        openChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(strings.getString("chooser.formats.JFLAP"), "*.jff"),new FileChooser.ExtensionFilter(strings.getString("chooser.formats.XML"), "*.xml"));
+        openChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(strings.getString("chooser.formats.JFLAP"), "*.jff"), new FileChooser.ExtensionFilter(strings.getString("chooser.formats.XML"), "*.xml"),
+                new FileChooser.ExtensionFilter(strings.getString("chooser.formats.FLACI"), "*.json"), new FileChooser.ExtensionFilter(strings.getString("chooser.formats.JSON"), "*.json"));
         file = openChooser.showOpenDialog(bBrowse.getScene().getWindow());
         if (file != null) {
             pathField.setText(file.getAbsolutePath());
-            handleConvert(e);
+            handleConvert();
         }
     }
 
     @FXML
-    public void handleSave(ActionEvent e) throws IOException, URISyntaxException {
+    public void handleSave() throws IOException {
         saveChooser.setTitle(strings.getString("chooser.saveScript"));
         saveChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(strings.getString("chooser.formats.TXT"), "*.txt"));
         if (file != null) {
@@ -82,14 +84,28 @@ public class Controller extends Application implements Initializable {
 
         File toSave = saveChooser.showSaveDialog(bSave.getScene().getWindow());
         if (toSave == null) return;
-        toSave.createNewFile();
+        if (!toSave.createNewFile()) return;
         FileWriter write = new FileWriter(toSave);
         write.append(outArea.getText());
         write.close();
     }
 
     @FXML
-    public void handleSaveJFF(ActionEvent e) throws IOException, JAXBException {
+    public void handleSaveFLACI() throws IOException {
+        saveChooser.setTitle(strings.getString("chooser.saveFLACI"));
+        saveChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(strings.getString("chooser.formats.FLACI"), "*.json"), new FileChooser.ExtensionFilter(strings.getString("chooser.formats.JSON"), "*.json"));
+        if (file != null) {
+            saveChooser.setInitialDirectory(file.getParentFile());
+            saveChooser.setInitialFileName(file.getName().split("\\.")[0]);
+        }
+
+        File toSave = saveChooser.showSaveDialog(bSave.getScene().getWindow());
+        if (toSave == null) return;
+        convert.tmsToFlaci(outArea.getText(), toSave);
+    }
+
+    @FXML
+    public void handleSaveJFF() throws JAXBException {
         saveChooser.setTitle(strings.getString("chooser.saveJFF"));
         saveChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(strings.getString("chooser.formats.JFLAP"), "*.jff"), new FileChooser.ExtensionFilter(strings.getString("chooser.formats.XML"), "*.xml"));
         if (file != null) {
@@ -99,7 +115,7 @@ public class Controller extends Application implements Initializable {
 
         File toSave = saveChooser.showSaveDialog(bSave.getScene().getWindow());
         if (toSave == null) return;
-        convert.convertScript(outArea.getText(), toSave);
+        convert.tmsToJflap(outArea.getText(), toSave);
     }
 
     public static void main(String[] args) {
@@ -107,7 +123,7 @@ public class Controller extends Application implements Initializable {
     }
 
     @Override
-    public void stop() throws Exception {
+    public void stop() {
         System.exit(0);
     }
 
