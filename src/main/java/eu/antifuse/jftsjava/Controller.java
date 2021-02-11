@@ -94,7 +94,7 @@ public class Controller extends Application implements Initializable {
 
     @FXML
     public void handleSaveFLACI(ActionEvent e) throws IOException {
-        saveChooser.setTitle(strings.getString("chooser.saveJFF"));
+        saveChooser.setTitle(strings.getString("chooser.saveFLACI"));
         saveChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(strings.getString("chooser.formats.FLACI"), "*.json"), new FileChooser.ExtensionFilter(strings.getString("chooser.formats.JSON"), "*.json"));
         if (file != null) {
             saveChooser.setInitialDirectory(file.getParentFile());
