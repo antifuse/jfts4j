@@ -96,6 +96,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  * 
  */
+@SuppressWarnings("unused")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
     "type",
@@ -262,7 +263,7 @@ public class Structure {
          */
         public List<Block> getBlock() {
             if (block == null) {
-                block = new ArrayList<Block>();
+                block = new ArrayList<>();
             }
             return this.block;
         }
@@ -291,7 +292,7 @@ public class Structure {
          */
         public List<State> getState() {
             if (state == null) {
-                state = new ArrayList<State>();
+                state = new ArrayList<>();
             }
             return this.state;
         }
@@ -320,7 +321,7 @@ public class Structure {
          */
         public List<Transition> getTransition() {
             if (transition == null) {
-                transition = new ArrayList<Transition>();
+                transition = new ArrayList<>();
             }
             return this.transition;
         }

@@ -1,7 +1,6 @@
 package eu.antifuse.jftsjava;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,7 +15,6 @@ import javafx.stage.Stage;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
@@ -55,7 +53,7 @@ public class Controller extends Application implements Initializable {
     }
 
     @FXML
-    public void handleConvert(ActionEvent e) throws JAXBException, IOException {
+    public void handleConvert() throws JAXBException, IOException {
         if (file == null) errorLabel.setVisible(true);
         else if (file.getName().substring(file.getName().lastIndexOf(".") + 1).equalsIgnoreCase("json"))
             outArea.setText(convert.flaciToTMS(file));
@@ -63,7 +61,7 @@ public class Controller extends Application implements Initializable {
     }
 
     @FXML
-    public void handleBrowse(ActionEvent e) throws JAXBException, IOException {
+    public void handleBrowse() throws JAXBException, IOException {
         errorLabel.setVisible(false);
         openChooser.setTitle(strings.getString("chooser.openJFLAP"));
         openChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(strings.getString("chooser.formats.JFLAP"), "*.jff"), new FileChooser.ExtensionFilter(strings.getString("chooser.formats.XML"), "*.xml"),
@@ -71,12 +69,12 @@ public class Controller extends Application implements Initializable {
         file = openChooser.showOpenDialog(bBrowse.getScene().getWindow());
         if (file != null) {
             pathField.setText(file.getAbsolutePath());
-            handleConvert(e);
+            handleConvert();
         }
     }
 
     @FXML
-    public void handleSave(ActionEvent e) throws IOException {
+    public void handleSave() throws IOException {
         saveChooser.setTitle(strings.getString("chooser.saveScript"));
         saveChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(strings.getString("chooser.formats.TXT"), "*.txt"));
         if (file != null) {
@@ -93,7 +91,7 @@ public class Controller extends Application implements Initializable {
     }
 
     @FXML
-    public void handleSaveFLACI(ActionEvent e) throws IOException {
+    public void handleSaveFLACI() throws IOException {
         saveChooser.setTitle(strings.getString("chooser.saveFLACI"));
         saveChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(strings.getString("chooser.formats.FLACI"), "*.json"), new FileChooser.ExtensionFilter(strings.getString("chooser.formats.JSON"), "*.json"));
         if (file != null) {
@@ -107,7 +105,7 @@ public class Controller extends Application implements Initializable {
     }
 
     @FXML
-    public void handleSaveJFF(ActionEvent e) throws JAXBException {
+    public void handleSaveJFF() throws JAXBException {
         saveChooser.setTitle(strings.getString("chooser.saveJFF"));
         saveChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(strings.getString("chooser.formats.JFLAP"), "*.jff"), new FileChooser.ExtensionFilter(strings.getString("chooser.formats.XML"), "*.xml"));
         if (file != null) {

@@ -1,5 +1,6 @@
 package eu.antifuse.jftsjava;
 
+@SuppressWarnings("unused")
 public class FLACI {
 
     String name;
