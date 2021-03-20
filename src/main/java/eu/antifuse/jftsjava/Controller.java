@@ -1,6 +1,7 @@
 package eu.antifuse.jftsjava;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,6 +18,7 @@ import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -53,28 +55,39 @@ public class Controller extends Application implements Initializable {
     }
 
     @FXML
-    public void handleConvert() throws JAXBException, IOException {
+    public void handleConvert(ActionEvent e) throws JAXBException, IOException {
         if (file == null) errorLabel.setVisible(true);
-        else if (file.getName().substring(file.getName().lastIndexOf(".") + 1).equalsIgnoreCase("json"))
-            outArea.setText(convert.flaciToTMS(file));
-        else outArea.setText(convert.jflapToTMS(file));
-    }
-
-    @FXML
-    public void handleBrowse() throws JAXBException, IOException {
-        errorLabel.setVisible(false);
-        openChooser.setTitle(strings.getString("chooser.openJFLAP"));
-        openChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(strings.getString("chooser.formats.JFLAP"), "*.jff"), new FileChooser.ExtensionFilter(strings.getString("chooser.formats.XML"), "*.xml"),
-                new FileChooser.ExtensionFilter(strings.getString("chooser.formats.FLACI"), "*.json"), new FileChooser.ExtensionFilter(strings.getString("chooser.formats.JSON"), "*.json"));
-        file = openChooser.showOpenDialog(bBrowse.getScene().getWindow());
-        if (file != null) {
-            pathField.setText(file.getAbsolutePath());
-            handleConvert();
+        else {
+            String extension = file.getName().substring(file.getName().lastIndexOf("."));
+            System.out.println(extension);
+            switch (extension) {
+                case ".xml":
+                case ".jff": {
+                    outArea.setText(convert.jflapToTMS(file));
+                    break;
+                }
+                case ".json": {
+                    outArea.setText(convert.flaciToTMS(file));
+                    break;
+                }
+            }
         }
     }
 
     @FXML
-    public void handleSave() throws IOException {
+    public void handleBrowse(ActionEvent e) throws JAXBException, IOException {
+        errorLabel.setVisible(false);
+        openChooser.setTitle(strings.getString("chooser.openJFLAP"));
+        openChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(strings.getString("chooser.formats.JFLAP"), "*.jff"),new FileChooser.ExtensionFilter(strings.getString("chooser.formats.XML"), "*.xml"), new FileChooser.ExtensionFilter(strings.getString("chooser.formats.FLACI"), "*.json"));
+        file = openChooser.showOpenDialog(bBrowse.getScene().getWindow());
+        if (file != null) {
+            pathField.setText(file.getAbsolutePath());
+            handleConvert(e);
+        }
+    }
+
+    @FXML
+    public void handleSave(ActionEvent e) throws IOException, URISyntaxException {
         saveChooser.setTitle(strings.getString("chooser.saveScript"));
         saveChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(strings.getString("chooser.formats.TXT"), "*.txt"));
         if (file != null) {
@@ -84,28 +97,14 @@ public class Controller extends Application implements Initializable {
 
         File toSave = saveChooser.showSaveDialog(bSave.getScene().getWindow());
         if (toSave == null) return;
-        if (!toSave.createNewFile()) return;
+        toSave.createNewFile();
         FileWriter write = new FileWriter(toSave);
         write.append(outArea.getText());
         write.close();
     }
 
     @FXML
-    public void handleSaveFLACI() throws IOException {
-        saveChooser.setTitle(strings.getString("chooser.saveFLACI"));
-        saveChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(strings.getString("chooser.formats.FLACI"), "*.json"), new FileChooser.ExtensionFilter(strings.getString("chooser.formats.JSON"), "*.json"));
-        if (file != null) {
-            saveChooser.setInitialDirectory(file.getParentFile());
-            saveChooser.setInitialFileName(file.getName().split("\\.")[0]);
-        }
-
-        File toSave = saveChooser.showSaveDialog(bSave.getScene().getWindow());
-        if (toSave == null) return;
-        convert.tmsToFlaci(outArea.getText(), toSave);
-    }
-
-    @FXML
-    public void handleSaveJFF() throws JAXBException {
+    public void handleSaveJFF(ActionEvent e) throws JAXBException {
         saveChooser.setTitle(strings.getString("chooser.saveJFF"));
         saveChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(strings.getString("chooser.formats.JFLAP"), "*.jff"), new FileChooser.ExtensionFilter(strings.getString("chooser.formats.XML"), "*.xml"));
         if (file != null) {
@@ -118,12 +117,25 @@ public class Controller extends Application implements Initializable {
         convert.tmsToJflap(outArea.getText(), toSave);
     }
 
+    @FXML
+    public void handleSaveFLACI(ActionEvent actionEvent) throws IOException {
+        saveChooser.setTitle(strings.getString("chooser.saveFLACI"));
+        saveChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(strings.getString("chooser.formats.JSON"), "*.json"));
+        if (file != null) {
+            saveChooser.setInitialDirectory(file.getParentFile());
+            saveChooser.setInitialFileName(file.getName().split("\\.")[0]);
+        }
+        File toSave = saveChooser.showSaveDialog(bSave.getScene().getWindow());
+        if (toSave == null) return;
+        convert.tmsToFlaci(outArea.getText(), toSave);
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void stop() {
+    public void stop() throws Exception {
         System.exit(0);
     }
 
@@ -131,4 +143,6 @@ public class Controller extends Application implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.strings = resources;
     }
+
+
 }
