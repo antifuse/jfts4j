@@ -1,8 +1,8 @@
 # jfts4j
 ![](https://img.shields.io/github/v/release/antifuse/jfts4j)
 ## What it does
-jfts4j is a JFLAP to Turing Machine Simulator converter. It supports the conversion of JFLAP XML to Simulator scripts (saved as plain text and displayed on screen) and vice-versa.
-The GUI was designed with JavaFX, XML parsing and building is handled with JAXB.
+jfts4j is a converter for Turing Machine simulations. It supports conversion between JFLAP XML format, Turing Machine Simulator script text and FLACI JSON. 
+The GUI is designed with JavaFX.
 
 ## What not to do
 **Do not** try to convert non-Turing (or multi-tape) JFLAP automata. Keep Turing Machine Simulator scripts in their standard format, leaving out comments and sticking to the order name-init-accept.
