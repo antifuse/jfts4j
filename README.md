@@ -1,5 +1,5 @@
 # jfts4j
-![](https://img.shields.io/github/v/release/antifuse/jfts4j)
+![](https://img.shields.io/github/license/antifuse/jfts4j) ![](https://img.shields.io/github/v/release/antifuse/jfts4j)
 ## What it does
 jfts4j is a converter for Turing Machine simulations. It supports conversion between JFLAP XML format, Turing Machine Simulator script text and FLACI JSON. 
 The GUI is designed with JavaFX.
